@@ -1,18 +1,39 @@
 <template>
-  <div class="blogs-component">
-    <h1>Blog Component is Live</h1>
+  <div class="blogs-component col">
+    <div
+      class="mb-2 d-flex justify-content-center"
+      v-if="$auth.isAuthenticated"
+    >
+      <blog-form />
+    </div>
+    <div class="card-columns">
+      <blog v-for="post in blogs" :key="post._id" :blogProp="post" />
+    </div>
   </div>
 </template>
 
 <script>
+import Blog from "./BlogComponent";
+import BlogForm from "./BlogForm";
+
 export default {
-  name: "BlogComponent",
+  name: "BlogsComponent",
   data() {
     return {};
   },
-  computed: {},
+  mounted() {
+    this.$store.dispatch("getBlogs");
+  },
+  computed: {
+    blogs() {
+      return this.$store.state.blogs;
+    },
+  },
   methods: {},
-  components: {},
+  components: {
+    Blog,
+    BlogForm,
+  },
 };
 </script>
 

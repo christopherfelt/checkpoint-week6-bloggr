@@ -1,16 +1,19 @@
 <template>
-  <div class="home">
+  <div class="home container text-center">
     <h1>Welcome</h1>
+    <div class="row d-flex justify-content-center">
+      <blogs />
+    </div>
   </div>
 </template>
 
 <script>
-import BlogComponent from "@/components/BlogsComponent.vue";
+import Blogs from "@/components/BlogsComponent.vue";
 
 export default {
   name: "home",
   components: {
-    BlogComponent,
+    Blogs,
   },
 };
 </script>
