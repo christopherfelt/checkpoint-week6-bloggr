@@ -5,9 +5,15 @@
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">{{ activeBlog.title }}</h4>
-            <h6>
+            <h5>
               by {{ activeBlog.creatorEmail }} - {{ activeBlog.creationDate }}
-            </h6>
+            </h5>
+            <h6>Tags</h6>
+            <div>
+              <span v-for="tag in activeBlog.tags" :key="tag">
+                {{ tag }}
+              </span>
+            </div>
             <p class="card-text">{{ activeBlog.body }}</p>
             <div v-if="isAuthor">
               <form v-if="editForm" @submit.prevent="editBlog">

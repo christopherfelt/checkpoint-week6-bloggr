@@ -26,7 +26,7 @@ const routes = [
     path: "/:id",
     name: "BlogDetail",
     component: BlogDetail,
-    beforeEnter: authGuard,
+    // beforeEnter: authGuard,
   },
 ];
 

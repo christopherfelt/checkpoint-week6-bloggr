@@ -3,6 +3,7 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">{{ blogProp.title }}</h4>
+        <p class="card-text">{{ blogProp.creatorEmail }}</p>
       </div>
     </div>
   </router-link>

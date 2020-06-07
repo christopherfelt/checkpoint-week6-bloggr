@@ -10,7 +10,9 @@ export default new Vuex.Store({
     profile: {},
     blogs: [],
     activeBlog: {},
-    userBlogs: [],
+    userPublishedBlogs: [],
+    userUnpublishedBlogs: [],
+    userComments: [],
   },
   mutations: {
     setProfile(state, profile) {
@@ -35,8 +37,14 @@ export default new Vuex.Store({
       updatedActiveBlog.comments = remaining;
       state.activeBlog = updatedActiveBlog;
     },
-    setUserBlogs(state, blogs) {
-      state.userBlogs = blogs;
+    setUserPublishedBlogs(state, publishedBlogs) {
+      state.userPublishedBlogs = publishedBlogs;
+    },
+    setUserUnpublishedBlogs(state, unPublishedBlogs) {
+      state.userUnpublishedBlogs = unPublishedBlogs;
+    },
+    setUserComments(state, comments) {
+      state.userComments = comments;
     },
   },
   actions: {
@@ -85,22 +93,25 @@ export default new Vuex.Store({
       try {
         let res = await api.post("blogs", newPost);
         commit("addNewBlog", res.data);
-        router.push({ name: "BlogDetail", params: { id: res.data._id } });
+        if (res.data.published) {
+          router.push({ name: "BlogDetail", params: { id: res.data._id } });
+        } else {
+          router.push({ name: "Profile" });
+        }
         dispatch("getBlogs");
       } catch (error) {
         console.error(error);
       }
     },
-
     async editBlog({ commit, dispatch }, updatedBlogPost) {
       try {
         let res = await api.put("blogs/" + updatedBlogPost.id, updatedBlogPost);
         commit("setActiveBlog", res.data);
+        dispatch("getUserBlogs");
       } catch (error) {
         console.error(error);
       }
     },
-
     async deleteBlog({ commit, dispatch }, id) {
       try {
         let res = await api.delete("blogs/" + id);
@@ -109,7 +120,6 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
-
     async addComment({ commit, dispatch }, newComment) {
       try {
         let res = await api.post("comments", newComment);
@@ -125,7 +135,6 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
-
     async deleteComment({ commit, dispatch }, id) {
       try {
         let res = await api.delete("comments/" + id);
@@ -135,11 +144,38 @@ export default new Vuex.Store({
         console.log(error);
       }
     },
-
-    async getUserBlogs({ commit, dispatch }, email) {
+    async getUserBlogs({ commit, dispatch }) {
       try {
-        let res = await api.get("blogs/?creatorEmail=" + email);
-        commit("setUserBlogs", res.data);
+        let res = await api.get("profile/blogs");
+        let published = [];
+        let unpublished = [];
+        let data = res.data;
+        data.forEach((c) => {
+          if (c.published) {
+            published.push(c);
+          } else {
+            unpublished.push(c);
+          }
+        });
+        commit("setUserPublishedBlogs", published);
+        commit("setUserUnpublishedBlogs", unpublished);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    async getUserComments({ commit, dispatch }) {
+      try {
+        let res = await api.get("profile/comments");
+        commit("setUserComments", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async searchByAuthor({ commit, dispatch }, searchEmail) {
+      try {
+        let res = await api.get("blogs/?creatorEmail=" + searchEmail);
+        commit("setBlogs", res.data);
       } catch (error) {
         console.error(error);
       }
