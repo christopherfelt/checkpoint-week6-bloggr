@@ -1,6 +1,5 @@
 <template>
-  <div class="home container text-center">
-    <h1>Welcome</h1>
+  <div class="home container-fluid text-center">
     <div class="row d-flex justify-content-center">
       <blogs />
     </div>

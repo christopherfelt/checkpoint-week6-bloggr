@@ -8,8 +8,8 @@
             <h5>
               by {{ activeBlog.creatorEmail }} - {{ activeBlog.creationDate }}
             </h5>
-            <h6>Tags</h6>
-            <div>
+            <div class="border-bottom">
+              <h6>Tags</h6>
               <span v-for="tag in activeBlog.tags" :key="tag">
                 {{ tag }}
               </span>
@@ -34,7 +34,7 @@
           </div>
         </div>
         <div class="card">
-          <div>
+          <div v-if="$auth.isAuthenticated">
             <form @submit.prevent="addComment">
               <input type="text" v-model="newComment.body" />
               <button class="btn btn-primary" type="submit">

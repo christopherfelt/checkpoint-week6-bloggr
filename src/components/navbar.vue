@@ -1,21 +1,19 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
-      <div class="d-flex flex-column align-items-center">
+      <div class="d-flex align-items-center">
+        <span style="color: green; margin-right: 2px;">Is this </span>
+
+        <img alt="Vue logo" src="../assets/logo.png" style="width: 25px;" />
         <img
           alt="Vue logo"
           src="../assets/logo.png"
-          style="transform: rotate(-90deg);width: 25px;"
+          style="width: 25px; margin-left: -10px; margin-right: 0;"
         />
-        <img
-          alt="Vue logo"
-          src="../assets/logo.png"
-          style="transform: rotate(-90deg);width: 25px;margin-top: -10px;"
-        />
+
+        <span style="color: green; margin-left: -4px">orking?</span>
       </div>
-      <div>
-        <h3 style="color: green">loggr</h3>
-      </div>
+      <div></div>
     </router-link>
     <button
       class="navbar-toggler"
@@ -42,6 +40,11 @@
         >
           <router-link class="nav-link" :to="{ name: 'Profile' }"
             >Profile</router-link
+          >
+        </li>
+        <li class="nav-item" :class="{ active: $route.name == 'About' }">
+          <router-link class="nav-link" :to="{ name: 'About' }"
+            >About</router-link
           >
         </li>
       </ul>

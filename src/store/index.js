@@ -172,10 +172,24 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
-    async searchByAuthor({ commit, dispatch }, searchEmail) {
+    async search({ commit, dispatch }, searchObject) {
       try {
-        let res = await api.get("blogs/?creatorEmail=" + searchEmail);
-        commit("setBlogs", res.data);
+        let res = [];
+        if (searchObject.searchBy == "author") {
+          let res = await api.get(
+            "blogs/?creatorEmail=" + searchObject.searchTerm
+          );
+          commit("setBlogs", res.data);
+        } else if ((searchObject.searchBy = "tag")) {
+          let searchTags = "";
+          let tagArray = searchObject.searchTerm.split(", ");
+          tagArray.forEach((t) => (searchTags += "tags=" + t + "&"));
+          let res = await api.get("blogs/?" + searchTags);
+          commit("setBlogs", res.data);
+        } else {
+          let res = ["search error"];
+          commit("setBlogs", res);
+        }
       } catch (error) {
         console.error(error);
       }

@@ -25,9 +25,10 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "./assets/_variables.scss";
+// @import "./assets/_variables.scss";
+@import "./assets/_spaclabvariables.scss";
 @import "bootstrap";
-@import "./assets/_overrides.scss";
+// @import "./assets/_overrides.scss";
 
 // * {
 //   outline: 1px solid red;

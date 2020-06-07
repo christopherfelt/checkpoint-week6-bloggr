@@ -1,20 +1,40 @@
 <template>
-  <div class="blogs-component col ">
-    <div class="mb-3 d-flex justify-content-center">
-      <form class="form-inline" @submit.prevent="searchByAuthor">
+  <div class="blogs-component col-8">
+    <div class="d-flex justify-content-center">
+      <form class="form" @submit.prevent="search">
         <div class="form-group">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Search by author name"
-            v-model="searchEmail"
-          />
-          <button class="btn btn-primary">Search</button>
+          <div class="d-flex m-2">
+            <input
+              type="text"
+              class="form-control d-inline"
+              placeholder="author name or blog tag"
+              v-model="searchTerm"
+            />
+            <button class="btn btn-primary d-inline ml-1">Search</button>
+          </div>
+          <div id="radio-section">
+            <label for="author">Author</label>
+            <input
+              id="searchAuthor"
+              name="author"
+              type="radio"
+              value="author"
+              v-model="picked"
+            />
+            <label for="tag">Tag</label>
+            <input
+              id="searchTag"
+              name="tag"
+              type="radio"
+              value="tag"
+              v-model="picked"
+            />
+          </div>
         </div>
       </form>
     </div>
     <div
-      class="mb-2 d-flex justify-content-center"
+      class="mb-3 d-flex justify-content-center"
       v-if="$auth.isAuthenticated"
     >
       <blog-form />
@@ -33,7 +53,8 @@ export default {
   name: "BlogsComponent",
   data() {
     return {
-      searchEmail: "",
+      searchTerm: "",
+      picked: "author",
     };
   },
   mounted() {
@@ -45,11 +66,14 @@ export default {
     },
   },
   methods: {
-    searchByAuthor() {
-      if (this.searchEmail == "") {
+    search() {
+      if (this.searchTerm == "") {
         this.$store.dispatch("getBlogs");
       } else {
-        this.$store.dispatch("searchByAuthor", this.searchEmail);
+        this.$store.dispatch("search", {
+          searchBy: this.picked,
+          searchTerm: this.searchTerm,
+        });
       }
     },
   },
@@ -64,5 +88,9 @@ export default {
 #form-section {
   width: 40em;
   text-align: left;
+}
+
+#radio-section > input {
+  margin: 0 5px;
 }
 </style>

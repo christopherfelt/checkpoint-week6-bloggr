@@ -1,7 +1,7 @@
 <template>
   <div class="blog-form">
     <div>
-      <button class="btn btn-primary" @click="openForm = !openForm">
+      <button class="btn btn-primary mb-2" @click="openForm = !openForm">
         Add Post
       </button>
     </div>
@@ -64,8 +64,12 @@ export default {
   computed: {},
   methods: {
     newPost() {
-      let tags = this.newBlogPost.tagString.split(", ");
-      this.newBlogPost.tags = tags;
+      try {
+        let tags = this.newBlogPost.tagString.split(", ");
+        this.newBlogPost.tags = tags;
+      } catch (error) {
+        console.warn("No tags added");
+      }
       this.$store.dispatch("createNewPost", this.newBlogPost);
       this.newBlogPost = {};
     },
